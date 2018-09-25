@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Temperature and Humidity</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+  google.charts.load('current', {
+    callback: function () {
+      var chart = new google.visualization.LineChart(document.getElementById('monitor-chart'));
+      var options = {'title' : 'Temperature and Humidity',
+        animation: {
+          duration: 100,
+          easing: 'out',
+          startup: true
+        },
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Temperature and Humidity'
+        },
+        height: 400
+      };
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('datetime', 'Time');
+      data.addColumn('number', 'Temperature');
+      data.addColumn('number', 'Humidity')
+      var formatDate = new google.visualization.DateFormat({pattern: 'hh:mm:ss'});
+      var formatNumber = new google.visualization.NumberFormat({pattern: '#,##0.0'});
+    /*
+<meta http-equiv="refresh" content="2.5">
+      getTemp();
+      setInterval(getTemp, 2000);
+      function getTemp() {
+        var temperature = (Math.random() * (35 - 30) + 30);
+        var humidity = (Math.random() * (40 - 15) + 15);
+        var timestamp = new Date();
+        drawChart(timestamp, temperature, humidity);
+      }*/
+
+      //drawChart(new Date(),<%= temperature %>, <%= humidity %>);
+      setInterval(drawChart, 2000);
+      //function drawChart(time, temperature, humidity) {
+        //var time = Date(timestamp)
+        function drawChart() {
+        temperature = <%= temperature %>
+        humidity = <%= humidity %>
+        time = new Date();
+        data.addRow([time, temperature, humidity]);
+
+        formatDate.format(data, 0);
+        formatNumber.format(data, 1);
+        formatNumber.format(data, 2);
+
+        chart.draw(data, options);
+      }
+    },
+    packages:['corechart']
+  });
+  </script>
+  <body>
+    <div id="monitor-chart"></div>
+  </body>
+</html>
